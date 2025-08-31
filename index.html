@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Precision HVAC NorCal - Electrify Your Home</title>
+    <meta name="description" content="Precision HVAC NorCal helps Bay Area homeowners electrify their homes with heat pumps, efficient systems, and clean energy solutions. Get your free consultation today.">
+    
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/styles.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav-container">
+            <div class="nav-logo">
+                <h1 class="logo-text">Precision HVAC NorCal</h1>
+                <span class="tagline">Precision is the proven choice!</span>
+            </div>
+            <div class="nav-menu">
+                <a href="#services">Services</a>
+                <a href="#process">Process</a>
+                <a href="#rebates">Rebates</a>
+                <a href="#reviews">Reviews</a>
+                <a href="#contact">Contact</a>
+            </div>
+            <div class="nav-cta">
+                <a href="tel:(510) 555-0123" class="phone-btn">📞 (510) 555-0123</a>
+                <button class="cta-button">Get Free Quote</button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Eligibility Checker Section -->
+    <section class="eligibility-checker">
+        <div class="container">
+            <div class="checker-content">
+                <div class="checker-text">
+                    <h2>Check Your Electrification Eligibility</h2>
+                    <p>Enter your address to see if you qualify for rebates and incentives in the Bay Area</p>
+                </div>
+                <div class="checker-form">
+                    <div class="address-input">
+                        <input type="text" id="address-search" placeholder="Enter your address...">
+                        <button id="check-eligibility" class="check-btn">Check Eligibility</button>
+                    </div>
+                    <div id="map-container" class="map-container">
+                        <div id="eligibility-map"></div>
+                        <div id="eligibility-results" class="eligibility-results">
+                            <div class="results-content">
+                                <h4>Eligibility Status</h4>
+                                <p id="eligibility-status">Enter an address to check eligibility</p>
+                                <div id="rebate-info" class="rebate-info"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1>Ready to Electrify Your Bay Area Home?</h1>
+                    <p class="hero-subtitle">We're here to help you take it at your own pace.</p>
+                    <p class="hero-description">Create your own path toward electrification with Precision HVAC NorCal. With an expert by your side, transition to clean, efficient electric systems that save money and improve comfort!</p>
+                    <div class="hero-cta">
+                        <button class="cta-primary">Get Free Consultation</button>
+                        <button class="cta-secondary">Estimate My Savings</button>
+                    </div>
+                </div>
+                <div class="hero-image">
+                    <img src="images/heat-pump-exterior.jpg" alt="Modern heat pump installation at Bay Area home" />
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Benefits Section -->
+    <section class="benefits" id="services">
+        <div class="container">
+            <h2>The Benefits of an All-Electric Home</h2>
+            <div class="benefits-grid">
+                <div class="benefit-card">
+                    <div class="benefit-icon">🏠</div>
+                    <h3>Improved Comfort</h3>
+                    <p>Heat pumps provide consistent, even heating and cooling throughout your home, eliminating cold spots and temperature fluctuations.</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">💰</div>
+                    <h3>Protection from Gas Price Volatility</h3>
+                    <p>Lock in predictable energy costs and reduce your dependence on volatile natural gas prices with efficient electric systems.</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">🌱</div>
+                    <h3>Clean Energy Ready</h3>
+                    <p>Take advantage of California's increasingly clean electric grid and pair with solar panels for maximum environmental impact.</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">🫁</div>
+                    <h3>Healthier Indoor Environment</h3>
+                    <p>Eliminate indoor air pollution from gas appliances and improve your family's health with clean electric systems.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="services-section" id="process">
+        <div class="container">
+            <h2>The Precision HVAC NorCal Difference</h2>
+            <div class="services-grid">
+                <div class="service-card">
+                    <img src="images/heat-pump-installation.jpg" alt="Professional heat pump installation">
+                    <div class="service-content">
+                        <h3>Complete Heat Pump Systems</h3>
+                        <p>From ducted central systems to ductless mini-splits, we install the right electric heating and cooling solution for your Bay Area home.</p>
+                    </div>
+                </div>
+                <div class="service-card">
+                    <img src="images/comfortable-home.jpg" alt="Comfortable modern Bay Area home interior">
+                    <div class="service-content">
+                        <h3>Shockingly Comfortable</h3>
+                        <p>Experience year-round comfort with precise temperature control, improved air quality, and whisper-quiet operation.</p>
+                    </div>
+                </div>
+                <div class="service-card">
+                    <img src="images/electrification-plan.jpg" alt="Custom home electrification planning">
+                    <div class="service-content">
+                        <h3>Your Complete Electrification Plan</h3>
+                        <p>We handle everything: rebates, permits, electrical upgrades, and installation. Your pathway to an all-electric home made simple.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Rebates Section -->
+    <section class="rebates-section" id="rebates">
+        <div class="container">
+            <div class="rebates-content">
+                <div class="rebates-text">
+                    <h2>Maximize Your Savings with Rebates & Incentives</h2>
+                    <p>Bay Area homeowners can save thousands on electrification projects through local utility rebates, state incentives, and federal tax credits.</p>
+                    <ul class="rebates-list">
+                        <li>PG&E and other utility rebates up to $3,000+</li>
+                        <li>California TECH Clean California rebates</li>
+                        <li>Federal tax credits up to 30%</li>
+                        <li>Bay Area Air Quality Management District incentives</li>
+                        <li>Local municipality programs</li>
+                    </ul>
+                    <button class="cta-button">See My Available Rebates</button>
+                </div>
+                <div class="rebates-calculator">
+                    <div class="calculator-card">
+                        <h3>Savings Calculator</h3>
+                        <div class="calculator-inputs">
+                            <div class="input-group">
+                                <label>Home Size (sq ft)</label>
+                                <input type="number" id="home-size" placeholder="2000">
+                            </div>
+                            <div class="input-group">
+                                <label>Current Monthly Gas Bill</label>
+                                <input type="number" id="gas-bill" placeholder="150">
+                            </div>
+                            <div class="input-group">
+                                <label>Current Monthly Electric Bill</label>
+                                <input type="number" id="electric-bill" placeholder="120">
+                            </div>
+                        </div>
+                        <button id="calculate-savings" class="calculate-btn">Calculate My Savings</button>
+                        <div id="savings-results" class="savings-results">
+                            <div class="result-item">
+                                <span class="result-label">Estimated Annual Savings:</span>
+                                <span id="annual-savings" class="result-value">--</span>
+                            </div>
+                            <div class="result-item">
+                                <span class="result-label">Available Rebates:</span>
+                                <span id="available-rebates" class="result-value">--</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials" id="reviews">
+        <div class="container">
+            <h2>What Bay Area Homeowners Say</h2>
+            <div class="testimonials-carousel">
+                <div class="testimonial-track" id="testimonial-track">
+                    <div class="testimonial-card">
+                        <div class="testimonial-header">
+                            <img src="images/avatar1.jpg" alt="Customer testimonial" class="testimonial-avatar">
+                            <div class="testimonial-info">
+                                <h4>Sarah Chen</h4>
+                                <span class="location">Oakland, CA</span>
+                                <div class="rating">★★★★★</div>
+                            </div>
+                        </div>
+                        <p>"Precision HVAC NorCal made our heat pump installation seamless. Bobby and his team handled all the permits and rebates, saving us over $4,000. Our home is so much more comfortable now!"</p>
+                    </div>
+                    <div class="testimonial-card">
+                        <div class="testimonial-header">
+                            <img src="images/avatar2.jpg" alt="Customer testimonial" class="testimonial-avatar">
+                            <div class="testimonial-info">
+                                <h4>Michael Rodriguez</h4>
+                                <span class="location">Berkeley, CA</span>
+                                <div class="rating">★★★★★</div>
+                            </div>
+                        </div>
+                        <p>"The team was professional, knowledgeable, and completed our whole-home electrification on time and on budget. Our energy bills dropped 40% in the first year!"</p>
+                    </div>
+                    <div class="testimonial-card">
+                        <div class="testimonial-header">
+                            <img src="images/avatar3.jpg" alt="Customer testimonial" class="testimonial-avatar">
+                            <div class="testimonial-info">
+                                <h4>Jennifer Park</h4>
+                                <span class="location">San Francisco, CA</span>
+                                <div class="rating">★★★★★</div>
+                            </div>
+                        </div>
+                        <p>"From consultation to installation, Precision HVAC exceeded our expectations. They helped us navigate all the Bay Area rebates and our new heat pump works perfectly."</p>
+                    </div>
+                </div>
+                <div class="carousel-controls">
+                    <button class="carousel-btn prev-btn" id="prev-btn">❮</button>
+                    <button class="carousel-btn next-btn" id="next-btn">❯</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact-section" id="contact">
+        <div class="container">
+            <div class="contact-content">
+                <div class="contact-info">
+                    <h2>Ready to Start Your Electrification Journey?</h2>
+                    <p>Contact Precision HVAC NorCal today for your free consultation. We serve the entire Bay Area with expert electrification services.</p>
+                    <div class="contact-details">
+                        <div class="contact-item">
+                            <strong>📞 Phone:</strong> (510) 555-0123
+                        </div>
+                        <div class="contact-item">
+                            <strong>📧 Email:</strong> info@precisionhvacnorcal.com
+                        </div>
+                        <div class="contact-item">
+                            <strong>📍 Service Area:</strong> Bay Area & Surrounding Communities
+                        </div>
+                        <div class="contact-item">
+                            <strong>🕒 Hours:</strong> Mon-Fri 7AM-6PM, Sat 8AM-4PM
+                        </div>
+                    </div>
+                </div>
+                <form class="contact-form">
+                    <h3>Get Your Free Consultation</h3>
+                    <div class="form-row">
+                        <input type="text" placeholder="First Name" required>
+                        <input type="text" placeholder="Last Name" required>
+                    </div>
+                    <div class="form-row">
+                        <input type="email" placeholder="Email Address" required>
+                        <input type="tel" placeholder="Phone Number" required>
+                    </div>
+                    <input type="text" placeholder="Property Address" required>
+                    <select required>
+                        <option value="">Select Service Interest</option>
+                        <option value="heat-pump">Heat Pump Installation</option>
+                        <option value="whole-home">Whole Home Electrification</option>
+                        <option value="consultation">Electrification Consultation</option>
+                        <option value="rebates">Rebate Assistance</option>
+                    </select>
+                    <textarea placeholder="Tell us about your project..." rows="4"></textarea>
+                    <button type="submit" class="form-submit-btn">Request Free Consultation</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Precision HVAC NorCal</h3>
+                    <p>Founded by Oakland native Bobby Jones in 2018, we bring over 14 years of HVAC expertise to Bay Area electrification projects.</p>
+                    <p><strong>License:</strong> CSLB #123456 | <strong>Bonded & Insured</strong></p>
+                </div>
+                <div class="footer-section">
+                    <h4>Services</h4>
+                    <ul>
+                        <li>Heat Pump Installation</li>
+                        <li>Ductless Mini-Splits</li>
+                        <li>Electric Water Heaters</li>
+                        <li>Electrical Panel Upgrades</li>
+                        <li>Rebate Processing</li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Service Areas</h4>
+                    <ul>
+                        <li>Oakland & East Bay</li>
+                        <li>San Francisco</li>
+                        <li>Berkeley & Richmond</li>
+                        <li>San Jose & South Bay</li>
+                        <li>Marin County</li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact Info</h4>
+                    <p>📞 (510) 555-0123</p>
+                    <p>📧 info@precisionhvacnorcal.com</p>
+                    <p>🕒 Mon-Fri 7AM-6PM</p>
+                    <p>📍 Serving Bay Area & Beyond</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Precision HVAC NorCal. All rights reserved. | <a href="#privacy">Privacy Policy</a> | <a href="#terms">Terms of Service</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Leaflet JavaScript -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    
+    <!-- Custom JavaScript -->
+    <script src="js/script.js"></script>
+</body>
+</html>
