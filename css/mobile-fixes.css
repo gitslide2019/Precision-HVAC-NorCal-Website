@@ -400,3 +400,411 @@ a:focus {
         animation: none;
     }
 }
+
+/* ===== NEW INTEGRATION COMPONENT MOBILE FIXES ===== */
+
+/* Error Handling Mobile Optimizations */
+@media (max-width: 768px) {
+    .error-container {
+        top: 60px; /* Account for mobile header */
+        right: 10px;
+        left: 10px;
+        max-width: none;
+    }
+
+    .error-dialog {
+        margin-bottom: 0.5rem;
+        border-radius: 8px;
+    }
+
+    .error-actions {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .error-action-btn {
+        width: 100%;
+        justify-content: center;
+        padding: 0.75rem;
+    }
+}
+
+/* Email Integration Mobile Optimizations */
+@media (max-width: 768px) {
+    .email-modal {
+        padding: 0.5rem;
+        align-items: flex-start;
+        padding-top: 2rem;
+    }
+
+    .email-modal-content {
+        width: 100%;
+        max-height: calc(100vh - 2rem);
+        margin: 0;
+    }
+
+    .email-options {
+        margin: 1rem 0;
+    }
+
+    .email-option {
+        flex-direction: column;
+        text-align: center;
+        padding: 1rem;
+        gap: 0.75rem;
+    }
+
+    .email-option .option-content {
+        text-align: center;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .form-actions {
+        flex-direction: column-reverse;
+        gap: 0.75rem;
+    }
+
+    .form-actions button {
+        width: 100%;
+    }
+}
+
+/* Address Autocomplete Mobile Optimizations */
+@media (max-width: 768px) {
+    .address-suggestions {
+        position: fixed !important;
+        top: auto !important;
+        bottom: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        max-height: 50vh;
+        border-radius: 12px 12px 0 0;
+        border: none;
+        border-top: 2px solid #dee2e6;
+        box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.15);
+        z-index: 10000;
+    }
+
+    .suggestion-item {
+        padding: 1rem;
+        border-bottom: 1px solid #eee;
+        font-size: 1rem;
+    }
+
+    .suggestion-item:first-child {
+        border-radius: 12px 12px 0 0;
+    }
+
+    .suggestion-item.highlighted {
+        background: #007bff;
+        color: white;
+    }
+}
+
+/* Progressive Forms Mobile Optimizations */
+@media (max-width: 768px) {
+    .form-section {
+        padding: 1rem;
+        margin-bottom: 1rem;
+        border-radius: 8px;
+    }
+
+    .form-section.collapsed .section-content {
+        padding: 0;
+    }
+
+    .section-header {
+        padding: 1rem;
+        margin: -1rem -1rem 1rem -1rem;
+        border-radius: 8px 8px 0 0;
+    }
+
+    .section-toggle {
+        font-size: 1.2rem;
+    }
+
+    .progress-indicator {
+        position: sticky;
+        top: 60px; /* Account for mobile header */
+        z-index: 100;
+        background: white;
+        border-bottom: 1px solid #dee2e6;
+        padding: 0.75rem 1rem;
+    }
+
+    .progress-steps {
+        gap: 0.5rem;
+    }
+
+    .progress-step {
+        min-width: 30px;
+        height: 30px;
+        font-size: 0.8rem;
+    }
+
+    .progress-step-label {
+        font-size: 0.7rem;
+        text-align: center;
+    }
+}
+
+/* Responsive Charts Mobile Optimizations */
+@media (max-width: 768px) {
+    .chart-container {
+        height: 250px !important;
+        margin: 1rem 0;
+    }
+
+    .chart-controls {
+        flex-direction: column;
+        gap: 0.75rem;
+        padding: 1rem;
+        background: #f8f9fa;
+        border-radius: 8px;
+        margin-bottom: 1rem;
+    }
+
+    .chart-toggle-group {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.5rem;
+    }
+
+    .chart-toggle {
+        padding: 0.75rem 1rem;
+        font-size: 0.9rem;
+        border-radius: 6px;
+        text-align: center;
+    }
+
+    .chart-legend {
+        flex-direction: column;
+        gap: 0.5rem;
+        margin-top: 1rem;
+        padding: 1rem;
+        background: #f8f9fa;
+        border-radius: 8px;
+    }
+
+    .legend-item {
+        justify-content: flex-start;
+        gap: 0.75rem;
+        padding: 0.5rem;
+        background: white;
+        border-radius: 4px;
+    }
+}
+
+/* PDF Report Generator Mobile Optimizations */
+@media (max-width: 768px) {
+    .pdf-generation-modal {
+        padding: 0.5rem;
+        align-items: flex-end;
+    }
+
+    .pdf-modal-content {
+        width: 100%;
+        max-height: 80vh;
+        border-radius: 12px 12px 0 0;
+        margin: 0;
+    }
+
+    .pdf-options {
+        gap: 0.75rem;
+    }
+
+    .pdf-option {
+        flex-direction: column;
+        text-align: center;
+        padding: 1rem;
+        gap: 0.75rem;
+    }
+
+    .pdf-preview {
+        display: none; /* Hide preview on mobile to save space */
+    }
+
+    .pdf-actions {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .pdf-actions button {
+        width: 100%;
+        padding: 1rem;
+        font-size: 1rem;
+    }
+}
+
+/* Calculation Transparency Mobile Optimizations */
+@media (max-width: 768px) {
+    .methodology-modal .modal-content {
+        width: 100%;
+        height: 100vh;
+        max-height: none;
+        border-radius: 0;
+        margin: 0;
+    }
+
+    .methodology-tabs {
+        flex-direction: column;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        background: white;
+    }
+
+    .tab-btn {
+        padding: 1rem;
+        text-align: left;
+        border-bottom: 1px solid #dee2e6;
+        border-radius: 0;
+    }
+
+    .tab-btn.active {
+        border-left: 4px solid #007bff;
+        border-bottom: 1px solid #dee2e6;
+    }
+
+    .calculation-controls {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1rem;
+        padding: 1rem;
+        position: sticky;
+        top: 60px;
+        background: white;
+        border-bottom: 1px solid #dee2e6;
+        z-index: 100;
+    }
+
+    .show-work-toggle {
+        justify-content: center;
+    }
+
+    .methodology-btn {
+        width: 100%;
+        justify-content: center;
+        padding: 0.75rem 1rem;
+    }
+
+    .calculation-work-display {
+        margin: 1rem;
+        padding: 1rem;
+        border-radius: 8px;
+    }
+
+    .calculation-step {
+        flex-direction: column;
+        gap: 0.75rem;
+        padding: 1rem;
+    }
+
+    .step-number {
+        align-self: flex-start;
+    }
+
+    .step-formula code {
+        font-size: 0.8rem;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+    }
+}
+
+/* Image Optimization Mobile Enhancements */
+@media (max-width: 768px) {
+    .image-performance-indicator {
+        display: none !important; /* Hide on mobile to avoid clutter */
+    }
+
+    img[data-optimized] {
+        transition: opacity 0.2s ease-in-out; /* Faster transitions on mobile */
+    }
+
+    .hero-image-container {
+        aspect-ratio: 4/3; /* Better mobile ratio */
+        margin: 1rem 0;
+    }
+
+    .gallery-image-container {
+        aspect-ratio: 3/2; /* Adjust for mobile viewing */
+    }
+
+    picture {
+        width: 100%;
+        display: block;
+    }
+
+    img.error {
+        min-height: 200px; /* Ensure error placeholders are visible */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+/* Touch-friendly interactions for all new components */
+@media (max-width: 768px) {
+    .error-action-btn,
+    .email-option,
+    .fallback-option,
+    .quote-option,
+    .pdf-option,
+    .chart-toggle,
+    .tab-btn,
+    .methodology-btn {
+        min-height: 48px; /* Apple/Android recommended touch target size */
+        touch-action: manipulation; /* Improve touch responsiveness */
+    }
+
+    /* Improve tap targets for small elements */
+    .error-close,
+    .email-modal-close,
+    .notification-close,
+    .toast-close,
+    .close-modal {
+        min-width: 44px;
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* Ensure sufficient spacing between interactive elements */
+    .error-actions,
+    .email-options,
+    .fallback-options,
+    .quote-options,
+    .pdf-options {
+        gap: 0.75rem;
+    }
+}
+
+/* Accessibility improvements for mobile */
+@media (max-width: 768px) {
+    /* Ensure focus indicators are visible on mobile */
+    *:focus {
+        outline: 2px solid #007bff;
+        outline-offset: 2px;
+    }
+
+    /* Improve contrast for mobile viewing */
+    .email-notification,
+    .error-dialog,
+    .toast {
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25); /* Stronger shadows for better definition */
+    }
+
+    /* Larger text for better mobile readability */
+    .error-message,
+    .notification-content,
+    .email-option .option-content p,
+    .fallback-details p {
+        font-size: 1rem;
+        line-height: 1.6;
+    }
+}

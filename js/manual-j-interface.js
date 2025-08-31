@@ -651,15 +651,53 @@ function createReportHTML() {
 }
 
 function emailReport() {
-    const email = prompt('Enter your email address to receive the report:');
-    if (email && validateEmail(email)) {
-        showNotification(`Report will be sent to ${email} within 24 hours.`, 'success');
+    // Use the new email integration system if available
+    if (window.emailIntegration && typeof window.emailIntegration.emailReport === 'function') {
+        // Get current report data
+        const reportData = {
+            calculations: window.manualJCalculator ? window.manualJCalculator.getResults() : null,
+            timestamp: new Date().toISOString(),
+            formData: gatherFormData()
+        };
         
-        // In a real implementation, this would send the report via email
-        console.log('Email report to:', email);
-    } else if (email) {
-        showNotification('Please enter a valid email address.', 'error');
+        window.emailIntegration.emailReport(reportData);
+    } else {
+        // Fallback to original prompt method with improved UX
+        const email = prompt('Enter your email address to receive the report:');
+        if (email && validateEmail(email)) {
+            showNotification(`Report will be sent to ${email} within 24 hours.`, 'success');
+            console.log('Email report to:', email);
+        } else if (email) {
+            showNotification('Please enter a valid email address.', 'error');
+        }
     }
+}
+
+// Helper function to gather current form data
+function gatherFormData() {
+    const formData = {};
+    
+    // Gather data from all assessment steps
+    for (let i = 1; i <= 5; i++) {
+        const stepForm = document.querySelector(`#step${i}`);
+        if (stepForm) {
+            const inputs = stepForm.querySelectorAll('input, select, textarea');
+            inputs.forEach(input => {
+                if (input.name || input.id) {
+                    const key = input.name || input.id;
+                    if (input.type === 'checkbox') {
+                        formData[key] = input.checked;
+                    } else if (input.type === 'radio') {
+                        if (input.checked) formData[key] = input.value;
+                    } else {
+                        formData[key] = input.value;
+                    }
+                }
+            });
+        }
+    }
+    
+    return formData;
 }
 
 function scheduleConsultation() {

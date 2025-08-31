@@ -676,3 +676,239 @@ if (typeof module !== 'undefined' && module.exports) {
 } else {
     window.ManualJCalculator = ManualJCalculator;
 }
+
+// Enhanced Manual J Calculator with Error Handling Integration
+class EnhancedManualJCalculator extends ManualJCalculator {
+    constructor() {
+        super();
+        this.errorHandler = null;
+        this.transparencyHandler = null;
+        this.lastResults = null;
+    }
+
+    // Initialize with error handling and transparency systems
+    init() {
+        // Wait for error handling system to be available
+        if (window.errorHandling) {
+            this.errorHandler = window.errorHandling;
+            console.log('Manual J Calculator integrated with error handling');
+        }
+
+        // Wait for calculation transparency system to be available
+        if (window.calculationTransparency) {
+            this.transparencyHandler = window.calculationTransparency;
+            this.transparencyHandler.integrateWithCalculator(this);
+            console.log('Manual J Calculator integrated with calculation transparency');
+        }
+
+        // If systems aren't ready, try again later
+        if (!this.errorHandler || !this.transparencyHandler) {
+            setTimeout(() => this.init(), 500);
+        }
+    }
+
+    // Enhanced calculateLoads with error handling and transparency
+    calculateLoads(buildingData) {
+        try {
+            // Record calculation start for transparency
+            if (this.transparencyHandler) {
+                this.transparencyHandler.clearCalculationSteps();
+                this.transparencyHandler.recordCalculationStep(
+                    "Load Calculation Started",
+                    `Building: ${buildingData.sqft} sq ft`,
+                    "Initializing ACCA Manual J calculation process",
+                    "ACCA Manual J 8th Edition"
+                );
+            }
+
+            // Validate input data
+            this.validateBuildingData(buildingData);
+
+            // Perform calculations with error handling
+            const results = super.calculateLoads(buildingData);
+            
+            // Store results for potential retry
+            this.lastResults = results;
+
+            // Record final calculation step
+            if (this.transparencyHandler) {
+                this.transparencyHandler.recordCalculationStep(
+                    "Calculation Complete",
+                    `Heating: ${results.heating.total} BTU/hr, Cooling: ${results.cooling.total} BTU/hr`,
+                    "Manual J calculations completed successfully",
+                    "Total Load = Envelope + Infiltration ± Internal Gains"
+                );
+                
+                // Show calculation work if enabled
+                this.transparencyHandler.showCalculationWork('step5-results');
+            }
+
+            return results;
+
+        } catch (error) {
+            console.error('Manual J calculation error:', error);
+            
+            // Use error handling system if available
+            if (this.errorHandler) {
+                const errorId = this.errorHandler.handleError({
+                    type: 'calculation',
+                    message: error.message,
+                    source: 'Manual J Calculator'
+                }, {
+                    operation: 'calculateLoads',
+                    invalidFields: this.getInvalidFields(buildingData),
+                    details: { buildingData, error: error.message },
+                    retryFunction: async () => {
+                        try {
+                            const result = this.calculateLoads(buildingData);
+                            return { success: true, result };
+                        } catch (retryError) {
+                            return { success: false, error: retryError.message };
+                        }
+                    }
+                });
+                
+                throw error; // Re-throw for caller to handle
+            } else {
+                // Fallback error handling
+                throw new Error(`Calculation failed: ${error.message}`);
+            }
+        }
+    }
+
+    // Validate building data
+    validateBuildingData(data) {
+        const errors = [];
+
+        if (!data.sqft || data.sqft < 100 || data.sqft > 50000) {
+            errors.push('Square footage must be between 100 and 50,000 sq ft');
+        }
+
+        if (!data.ceilingHeight || data.ceilingHeight < 6 || data.ceilingHeight > 20) {
+            errors.push('Ceiling height must be between 6 and 20 feet');
+        }
+
+        if (!data.bedrooms || data.bedrooms < 1 || data.bedrooms > 20) {
+            errors.push('Number of bedrooms must be between 1 and 20');
+        }
+
+        if (data.occupants && (data.occupants < 1 || data.occupants > 50)) {
+            errors.push('Number of occupants must be between 1 and 50');
+        }
+
+        if (!data.insulationLevel) {
+            errors.push('Insulation level is required');
+        }
+
+        if (!data.windowType) {
+            errors.push('Window type is required');
+        }
+
+        if (errors.length > 0) {
+            throw new Error(`Validation failed: ${errors.join(', ')}`);
+        }
+    }
+
+    // Get invalid field IDs for error highlighting
+    getInvalidFields(data) {
+        const invalidFields = [];
+
+        if (!data.sqft || data.sqft < 100 || data.sqft > 50000) {
+            invalidFields.push('sqft');
+        }
+        if (!data.ceilingHeight || data.ceilingHeight < 6 || data.ceilingHeight > 20) {
+            invalidFields.push('ceilingHeight');
+        }
+        if (!data.bedrooms || data.bedrooms < 1 || data.bedrooms > 20) {
+            invalidFields.push('bedrooms');
+        }
+        if (!data.insulationLevel) {
+            invalidFields.push('insulationLevel');
+        }
+        if (!data.windowType) {
+            invalidFields.push('windowType');
+        }
+
+        return invalidFields;
+    }
+
+    // Get calculation results (for PDF generation and reporting)
+    getResults() {
+        return this.lastResults;
+    }
+
+    // Enhanced equipment sizing with error handling
+    sizeEquipment(loadResults, preferences = {}) {
+        try {
+            const equipment = super.sizeEquipment(loadResults, preferences);
+            
+            // Record equipment sizing for transparency
+            if (this.transparencyHandler) {
+                this.transparencyHandler.recordCalculationStep(
+                    "Equipment Sizing",
+                    `${equipment.heatPump.model} - ${equipment.heatPump.heatingCapacity}/${equipment.heatPump.coolingCapacity} BTU/hr`,
+                    "Equipment sized based on calculated loads with appropriate safety factors",
+                    "Capacity ≥ Load × Safety Factor (typically 1.0-1.2)"
+                );
+            }
+
+            return equipment;
+
+        } catch (error) {
+            if (this.errorHandler) {
+                this.errorHandler.handleError({
+                    type: 'calculation',
+                    message: `Equipment sizing failed: ${error.message}`
+                }, {
+                    operation: 'sizeEquipment',
+                    details: { loadResults, preferences }
+                });
+            }
+            throw error;
+        }
+    }
+
+    // Enhanced rebate calculation with error handling
+    calculateRebates(equipmentCosts, location) {
+        try {
+            const rebates = super.calculateRebates(equipmentCosts, location);
+            
+            // Record rebate calculation for transparency
+            if (this.transparencyHandler) {
+                this.transparencyHandler.recordCalculationStep(
+                    "Rebate Calculation",
+                    `Total rebates: $${rebates.total}`,
+                    "Available rebates and incentives calculated based on location and equipment",
+                    "Total Rebates = Federal Tax Credit + State Rebates + Utility Incentives"
+                );
+            }
+
+            return rebates;
+
+        } catch (error) {
+            if (this.errorHandler) {
+                this.errorHandler.handleError({
+                    type: 'calculation',
+                    message: `Rebate calculation failed: ${error.message}`
+                }, {
+                    operation: 'calculateRebates',
+                    details: { equipmentCosts, location }
+                });
+            }
+            throw error;
+        }
+    }
+}
+
+// Initialize enhanced calculator when DOM is ready
+document.addEventListener('DOMContentLoaded', () => {
+    // Replace the basic calculator with enhanced version
+    window.manualJCalculator = new EnhancedManualJCalculator();
+    
+    // Initialize after a short delay to ensure other systems are ready
+    setTimeout(() => {
+        window.manualJCalculator.init();
+    }, 1000);
+    
+    console.log('Enhanced Manual J Calculator ready with error handling and transparency');
+});
