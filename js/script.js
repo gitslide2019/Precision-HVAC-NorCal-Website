@@ -119,13 +119,17 @@ function updateEligibilityResults(isEligible, address) {
                 <li>Federal Tax Credit: Up to 30%</li>
                 <li>BAAQMD Incentives: Up to $1,500</li>
             </ul>
-            <button class="cta-button" style="font-size: 14px; padding: 8px 16px;">Get My Exact Rebates</button>
+            <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px;">
+                <button class="cta-button" style="font-size: 14px; padding: 8px 16px;" onclick="window.location.href='manual-j-assessment.html'">Get Full Assessment</button>
+                <button class="cta-button" style="font-size: 14px; padding: 8px 16px; background: #28a745;" onclick="document.getElementById('contact').scrollIntoView({behavior: 'smooth'})">Quick Quote</button>
+            </div>
         `;
         currentMarker.bindPopup(`
             <div style="text-align: center;">
                 <strong>${address}</strong><br>
                 <span style="color: #28a745;">✓ Eligible for Service</span><br>
-                <small>Estimated rebates: $5,000+</small>
+                <small>Estimated rebates: $5,000+</small><br>
+                <button onclick="window.location.href='manual-j-assessment.html'" style="margin-top: 8px; padding: 4px 8px; background: #2c5282; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 12px;">Full Manual J Assessment</button>
             </div>
         `).openPopup();
     } else {

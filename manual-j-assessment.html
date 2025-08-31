@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NREL OpenStudio Manual J Load Assessment - Precision HVAC NorCal</title>
+    <meta name="description" content="Complete ACCA Manual J residential load calculation and HVAC system sizing for Bay Area homes. Get detailed energy analysis and equipment recommendations.">
+    
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/manual-j.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Chart.js for data visualization -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav-container">
+            <div class="nav-logo">
+                <h1 class="logo-text">Precision HVAC NorCal</h1>
+                <span class="tagline">NREL OpenStudio Manual J Assessment</span>
+            </div>
+            <div class="nav-menu">
+                <a href="index.html">Home</a>
+                <a href="#assessment">Assessment</a>
+                <a href="#calculations">Calculations</a>
+                <a href="#recommendations">Recommendations</a>
+                <a href="#schedule">Schedule</a>
+            </div>
+            <div class="nav-cta">
+                <a href="tel:(510) 555-0123" class="phone-btn">📞 (510) 555-0123</a>
+                <button class="cta-button" onclick="generateReport()">Generate Report</button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Progress Indicator -->
+    <section class="progress-section">
+        <div class="container">
+            <div class="progress-bar">
+                <div class="progress-step active" data-step="1">
+                    <span class="step-number">1</span>
+                    <span class="step-label">Building Info</span>
+                </div>
+                <div class="progress-step" data-step="2">
+                    <span class="step-number">2</span>
+                    <span class="step-label">Envelope</span>
+                </div>
+                <div class="progress-step" data-step="3">
+                    <span class="step-number">3</span>
+                    <span class="step-label">Systems</span>
+                </div>
+                <div class="progress-step" data-step="4">
+                    <span class="step-number">4</span>
+                    <span class="step-label">Analysis</span>
+                </div>
+                <div class="progress-step" data-step="5">
+                    <span class="step-number">5</span>
+                    <span class="step-label">Report</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Assessment Form -->
+    <section class="assessment-form" id="assessment">
+        <div class="container">
+            <div class="form-header">
+                <h1>Complete ACCA Manual J Load Assessment</h1>
+                <p>Comprehensive building analysis for accurate HVAC sizing and energy modeling using NREL OpenStudio methodologies</p>
+            </div>
+
+            <!-- Step 1: Building Information -->
+            <div class="form-step active" id="step-1">
+                <div class="step-header">
+                    <h2>Step 1: Building Information</h2>
+                    <p>Basic property details and location data</p>
+                </div>
+                
+                <div class="form-grid">
+                    <div class="form-section">
+                        <h3>Property Details</h3>
+                        <div class="input-group">
+                            <label for="property-address">Property Address *</label>
+                            <input type="text" id="property-address" required>
+                            <small>Enter complete address for climate zone determination</small>
+                        </div>
+                        
+                        <div class="input-row">
+                            <div class="input-group">
+                                <label for="home-type">Home Type *</label>
+                                <select id="home-type" required>
+                                    <option value="">Select Type</option>
+                                    <option value="single-family">Single Family Detached</option>
+                                    <option value="townhouse">Townhouse</option>
+                                    <option value="condo">Condominium</option>
+                                    <option value="manufactured">Manufactured Home</option>
+                                </select>
+                            </div>
+                            
+                            <div class="input-group">
+                                <label for="year-built">Year Built *</label>
+                                <input type="number" id="year-built" min="1900" max="2024" required>
+                            </div>
+                        </div>
+
+                        <div class="input-row">
+                            <div class="input-group">
+                                <label for="total-area">Total Conditioned Area (sq ft) *</label>
+                                <input type="number" id="total-area" min="400" max="10000" required>
+                            </div>
+                            
+                            <div class="input-group">
+                                <label for="ceiling-height">Average Ceiling Height (ft) *</label>
+                                <input type="number" id="ceiling-height" min="7" max="20" step="0.5" value="9" required>
+                            </div>
+                        </div>
+
+                        <div class="input-row">
+                            <div class="input-group">
+                                <label for="stories">Number of Stories *</label>
+                                <select id="stories" required>
+                                    <option value="">Select</option>
+                                    <option value="1">1 Story</option>
+                                    <option value="1.5">1.5 Stories</option>
+                                    <option value="2">2 Stories</option>
+                                    <option value="2.5">2.5 Stories</option>
+                                    <option value="3">3+ Stories</option>
+                                </select>
+                            </div>
+                            
+                            <div class="input-group">
+                                <label for="orientation">Front Door Faces *</label>
+                                <select id="orientation" required>
+                                    <option value="">Select Direction</option>
+                                    <option value="north">North</option>
+                                    <option value="northeast">Northeast</option>
+                                    <option value="east">East</option>
+                                    <option value="southeast">Southeast</option>
+                                    <option value="south">South</option>
+                                    <option value="southwest">Southwest</option>
+                                    <option value="west">West</option>
+                                    <option value="northwest">Northwest</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>Occupancy & Usage</h3>
+                        <div class="input-row">
+                            <div class="input-group">
+                                <label for="occupants">Number of Occupants</label>
+                                <input type="number" id="occupants" min="1" max="20" value="4">
+                            </div>
+                            
+                            <div class="input-group">
+                                <label for="usage-type">Usage Pattern</label>
+                                <select id="usage-type">
+                                    <option value="standard">Standard Occupancy</option>
+                                    <option value="home-office">Home Office/High Use</option>
+                                    <option value="vacation">Vacation/Weekend Home</option>
+                                    <option value="elderly">Elderly/High Comfort Needs</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <label for="design-temps">Design Temperature Preferences</label>
+                            <div class="temp-controls">
+                                <div class="temp-input">
+                                    <label>Heating (°F)</label>
+                                    <input type="number" id="heating-temp" min="65" max="78" value="70">
+                                </div>
+                                <div class="temp-input">
+                                    <label>Cooling (°F)</label>
+                                    <input type="number" id="cooling-temp" min="70" max="82" value="75">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step-navigation">
+                    <button type="button" class="btn-secondary" disabled>Previous</button>
+                    <button type="button" class="btn-primary" onclick="nextStep()">Next: Building Envelope</button>
+                </div>
+            </div>
+
+            <!-- Step 2: Building Envelope -->
+            <div class="form-step" id="step-2">
+                <div class="step-header">
+                    <h2>Step 2: Building Envelope Analysis</h2>
+                    <p>Detailed thermal envelope characteristics for accurate load calculations</p>
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-section">
+                        <h3>Wall Construction</h3>
+                        <div class="input-group">
+                            <label for="wall-type">Primary Wall Construction *</label>
+                            <select id="wall-type" required>
+                                <option value="">Select Construction</option>
+                                <option value="wood-frame-2x4">Wood Frame 2x4</option>
+                                <option value="wood-frame-2x6">Wood Frame 2x6</option>
+                                <option value="steel-frame">Steel Frame</option>
+                                <option value="masonry">Masonry/Block</option>
+                                <option value="stucco">Stucco over Frame</option>
+                                <option value="log">Log Construction</option>
+                            </select>
+                        </div>
+
+                        <div class="input-row">
+                            <div class="input-group">
+                                <label for="wall-insulation">Wall Insulation R-Value</label>
+                                <select id="wall-insulation">
+                                    <option value="0">No Insulation (R-0)</option>
+                                    <option value="11">R-11 (3.5" Fiberglass)</option>
+                                    <option value="13">R-13 (3.5" High-Density)</option>
+                                    <option value="19">R-19 (6" Fiberglass)</option>
+                                    <option value="21">R-21 (5.5" High-Density)</option>
+                                    <option value="30">R-30+ (Continuous Insulation)</option>
+                                </select>
+                            </div>
+                            
+                            <div class="input-group">
+                                <label for="exterior-finish">Exterior Finish</label>
+                                <select id="exterior-finish">
+                                    <option value="vinyl">Vinyl Siding</option>
+                                    <option value="wood">Wood Siding</option>
+                                    <option value="brick">Brick Veneer</option>
+                                    <option value="stucco">Stucco</option>
+                                    <option value="stone">Stone/Cultured Stone</option>
+                                    <option value="fiber-cement">Fiber Cement</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <label for="wall-color">Exterior Wall Color</label>
+                            <select id="wall-color">
+                                <option value="light">Light Colors (White, Cream, Light Gray)</option>
+                                <option value="medium">Medium Colors (Beige, Tan, Medium Gray)</option>
+                                <option value="dark">Dark Colors (Brown, Dark Gray, Navy)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>Roof & Attic</h3>
+                        <div class="input-row">
+                            <div class="input-group">
+                                <label for="roof-type">Roof Type *</label>
+                                <select id="roof-type" required>
+                                    <option value="">Select Type</option>
+                                    <option value="gable">Gable</option>
+                                    <option value="hip">Hip</option>
+                                    <option value="shed">Shed</option>
+                                    <option value="flat">Flat</option>
+                                    <option value="complex">Complex/Multiple</option>
+                                </select>
+                            </div>
+                            
+                            <div class="input-group">
+                                <label for="roof-material">Roof Material</label>
+                                <select id="roof-material">
+                                    <option value="asphalt">Asphalt Shingles</option>
+                                    <option value="tile">Clay/Concrete Tile</option>
+                                    <option value="metal">Metal Roofing</option>
+                                    <option value="slate">Slate</option>
+                                    <option value="wood">Wood Shake/Shingle</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="input-row">
+                            <div class="input-group">
+                                <label for="roof-color">Roof Color</label>
+                                <select id="roof-color">
+                                    <option value="light">Light (White, Light Gray, Cream)</option>
+                                    <option value="medium">Medium (Brown, Red, Medium Gray)</option>
+                                    <option value="dark">Dark (Black, Dark Brown, Dark Gray)</option>
+                                </select>
+                            </div>
+                            
+                            <div class="input-group">
+                                <label for="attic-insulation">Attic Insulation R-Value *</label>
+                                <select id="attic-insulation" required>
+                                    <option value="">Select R-Value</option>
+                                    <option value="0">No Insulation (R-0)</option>
+                                    <option value="19">R-19 (6" Fiberglass)</option>
+                                    <option value="30">R-30 (10" Fiberglass)</option>
+                                    <option value="38">R-38 (12" Fiberglass)</option>
+                                    <option value="49">R-49 (16" Fiberglass)</option>
+                                    <option value="60">R-60+ (20" Fiberglass)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <label for="attic-type">Attic Configuration</label>
+                            <select id="attic-type">
+                                <option value="vented">Vented Attic</option>
+                                <option value="unvented">Unvented/Conditioned Attic</option>
+                                <option value="cathedral">Cathedral/Vaulted Ceiling</option>
+                                <option value="flat">Flat Roof</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>Foundation</h3>
+                        <div class="input-group">
+                            <label for="foundation-type">Foundation Type *</label>
+                            <select id="foundation-type" required>
+                                <option value="">Select Type</option>
+                                <option value="slab">Slab on Grade</option>
+                                <option value="crawlspace-vented">Vented Crawlspace</option>
+                                <option value="crawlspace-unvented">Unvented Crawlspace</option>
+                                <option value="basement-conditioned">Conditioned Basement</option>
+                                <option value="basement-unconditioned">Unconditioned Basement</option>
+                            </select>
+                        </div>
+
+                        <div class="input-row">
+                            <div class="input-group">
+                                <label for="foundation-insulation">Foundation Insulation R-Value</label>
+                                <select id="foundation-insulation">
+                                    <option value="0">No Insulation (R-0)</option>
+                                    <option value="5">R-5 (1" Rigid Foam)</option>
+                                    <option value="10">R-10 (2" Rigid Foam)</option>
+                                    <option value="15">R-15 (3" Rigid Foam)</option>
+                                    <option value="19">R-19 (Batt in Floor Joist)</option>
+                                    <option value="30">R-30 (Continuous Insulation)</option>
+                                </select>
+                            </div>
+                            
+                            <div class="input-group">
+                                <label for="basement-depth">Below Grade Depth (ft)</label>
+                                <input type="number" id="basement-depth" min="0" max="12" step="0.5" value="0">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step-navigation">
+                    <button type="button" class="btn-secondary" onclick="prevStep()">Previous</button>
+                    <button type="button" class="btn-primary" onclick="nextStep()">Next: Windows & Systems</button>
+                </div>
+            </div>
+
+            <!-- Step 3: Windows & Systems -->
+            <div class="form-step" id="step-3">
+                <div class="step-header">
+                    <h2>Step 3: Windows & HVAC Systems</h2>
+                    <p>Window specifications and existing mechanical systems</p>
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-section">
+                        <h3>Windows & Doors</h3>
+                        <div class="input-row">
+                            <div class="input-group">
+                                <label for="window-area-north">North Windows (sq ft)</label>
+                                <input type="number" id="window-area-north" min="0" max="500" step="1" value="0">
+                            </div>
+                            <div class="input-group">
+                                <label for="window-area-east">East Windows (sq ft)</label>
+                                <input type="number" id="window-area-east" min="0" max="500" step="1" value="0">
+                            </div>
+                        </div>
+                        
+                        <div class="input-row">
+                            <div class="input-group">
+                                <label for="window-area-south">South Windows (sq ft)</label>
+                                <input type="number" id="window-area-south" min="0" max="500" step="1" value="0">
+                            </div>
+                            <div class="input-group">
+                                <label for="window-area-west">West Windows (sq ft)</label>
+                                <input type="number" id="window-area-west" min="0" max="500" step="1" value="0">
+                            </div>
+                        </div>
+
+                        <div class="input-row">
+                            <div class="input-group">
+                                <label for="window-type">Window Type *</label>
+                                <select id="window-type" required>
+                                    <option value="">Select Type</option>
+                                    <option value="single-pane">Single Pane</option>
+                                    <option value="double-pane">Double Pane</option>
+                                    <option value="double-pane-lowE">Double Pane Low-E</option>
+                                    <option value="triple-pane">Triple Pane</option>
+                                    <option value="triple-pane-lowE">Triple Pane Low-E</option>
+                                </select>
+                            </div>
+                            
+                            <div class="input-group">
+                                <label for="window-frame">Window Frame Material</label>
+                                <select id="window-frame">
+                                    <option value="aluminum">Aluminum</option>
+                                    <option value="aluminum-thermal">Aluminum w/ Thermal Break</option>
+                                    <option value="wood">Wood</option>
+                                    <option value="vinyl">Vinyl/PVC</option>
+                                    <option value="fiberglass">Fiberglass</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <label for="shading">External Shading</label>
+                            <select id="shading">
+                                <option value="none">No Shading</option>
+                                <option value="overhangs">Overhangs/Awnings</option>
+                                <option value="trees">Trees/Landscaping</option>
+                                <option value="neighboring">Neighboring Buildings</option>
+                                <option value="combination">Combination of Above</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>Current HVAC System</h3>
+                        <div class="input-row">
+                            <div class="input-group">
+                                <label for="heating-system">Primary Heating System</label>
+                                <select id="heating-system">
+                                    <option value="gas-furnace">Gas Furnace</option>
+                                    <option value="electric-furnace">Electric Furnace</option>
+                                    <option value="heat-pump">Heat Pump</option>
+                                    <option value="boiler">Boiler</option>
+                                    <option value="baseboard">Electric Baseboard</option>
+                                    <option value="radiant">Radiant Floor</option>
+                                    <option value="none">No Central Heating</option>
+                                </select>
+                            </div>
+                            
+                            <div class="input-group">
+                                <label for="heating-age">Heating System Age (years)</label>
+                                <input type="number" id="heating-age" min="0" max="50" step="1">
+                            </div>
+                        </div>
+
+                        <div class="input-row">
+                            <div class="input-group">
+                                <label for="cooling-system">Primary Cooling System</label>
+                                <select id="cooling-system">
+                                    <option value="central-ac">Central Air Conditioning</option>
+                                    <option value="heat-pump">Heat Pump</option>
+                                    <option value="window-units">Window Units</option>
+                                    <option value="evaporative">Evaporative Cooling</option>
+                                    <option value="none">No Cooling</option>
+                                </select>
+                            </div>
+                            
+                            <div class="input-group">
+                                <label for="cooling-age">Cooling System Age (years)</label>
+                                <input type="number" id="cooling-age" min="0" max="50" step="1">
+                            </div>
+                        </div>
+
+                        <div class="input-row">
+                            <div class="input-group">
+                                <label for="ductwork">Ductwork Condition</label>
+                                <select id="ductwork">
+                                    <option value="excellent">Excellent (New/Recently Sealed)</option>
+                                    <option value="good">Good (Minor Leaks)</option>
+                                    <option value="fair">Fair (Moderate Leaks)</option>
+                                    <option value="poor">Poor (Significant Leaks)</option>
+                                    <option value="none">No Ductwork</option>
+                                </select>
+                            </div>
+                            
+                            <div class="input-group">
+                                <label for="duct-location">Duct Location</label>
+                                <select id="duct-location">
+                                    <option value="conditioned">Conditioned Space</option>
+                                    <option value="attic">Unconditioned Attic</option>
+                                    <option value="crawlspace">Crawlspace</option>
+                                    <option value="basement">Basement</option>
+                                    <option value="mixed">Mixed Locations</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>Water Heating & Other Systems</h3>
+                        <div class="input-row">
+                            <div class="input-group">
+                                <label for="water-heater">Water Heater Type</label>
+                                <select id="water-heater">
+                                    <option value="gas-tank">Gas Tank</option>
+                                    <option value="electric-tank">Electric Tank</option>
+                                    <option value="gas-tankless">Gas Tankless</option>
+                                    <option value="electric-tankless">Electric Tankless</option>
+                                    <option value="heat-pump-wh">Heat Pump Water Heater</option>
+                                    <option value="solar">Solar Water Heater</option>
+                                </select>
+                            </div>
+                            
+                            <div class="input-group">
+                                <label for="wh-age">Water Heater Age (years)</label>
+                                <input type="number" id="wh-age" min="0" max="30" step="1">
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <label for="appliances">Major Electric Appliances</label>
+                            <div class="checkbox-group">
+                                <label><input type="checkbox" id="pool-pump"> Pool Pump</label>
+                                <label><input type="checkbox" id="electric-vehicle"> EV Charger</label>
+                                <label><input type="checkbox" id="hot-tub"> Hot Tub/Spa</label>
+                                <label><input type="checkbox" id="electric-range"> Electric Range/Cooktop</label>
+                                <label><input type="checkbox" id="electric-dryer"> Electric Dryer</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step-navigation">
+                    <button type="button" class="btn-secondary" onclick="prevStep()">Previous</button>
+                    <button type="button" class="btn-primary" onclick="nextStep()">Calculate Loads</button>
+                </div>
+            </div>
+
+            <!-- Step 4: Analysis & Calculations -->
+            <div class="form-step" id="step-4">
+                <div class="step-header">
+                    <h2>Step 4: Load Analysis & Calculations</h2>
+                    <p>ACCA Manual J calculations and energy modeling results</p>
+                </div>
+
+                <div class="analysis-container">
+                    <div class="calculation-status" id="calculation-status">
+                        <div class="status-icon">⚙️</div>
+                        <h3>Running Calculations...</h3>
+                        <p>Performing ACCA Manual J load analysis and NREL OpenStudio energy modeling</p>
+                        <div class="progress-spinner"></div>
+                    </div>
+
+                    <!-- Results will be populated by JavaScript -->
+                    <div class="calculation-results" id="calculation-results" style="display: none;">
+                        <div class="results-grid">
+                            <div class="result-card">
+                                <h3>Heating Load</h3>
+                                <div class="load-value">
+                                    <span id="heating-load">--</span>
+                                    <small>Btu/h</small>
+                                </div>
+                                <div class="load-details">
+                                    <div>Design Temp: <span id="design-heating-temp">--</span>°F</div>
+                                    <div>Heat Loss Rate: <span id="heat-loss-rate">--</span> Btu/h/°F</div>
+                                </div>
+                            </div>
+
+                            <div class="result-card">
+                                <h3>Cooling Load</h3>
+                                <div class="load-value">
+                                    <span id="cooling-load">--</span>
+                                    <small>Btu/h</small>
+                                </div>
+                                <div class="load-details">
+                                    <div>Design Temp: <span id="design-cooling-temp">--</span>°F</div>
+                                    <div>Heat Gain Rate: <span id="heat-gain-rate">--</span> Btu/h/°F</div>
+                                </div>
+                            </div>
+
+                            <div class="result-card">
+                                <h3>Load Density</h3>
+                                <div class="load-value">
+                                    <span id="load-density-heating">--</span>
+                                    <small>Btu/h/sq ft</small>
+                                </div>
+                                <div class="load-details">
+                                    <div>Cooling: <span id="load-density-cooling">--</span> Btu/h/sq ft</div>
+                                    <div>Efficiency Rating: <span id="efficiency-rating">--</span></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="load-breakdown">
+                            <h3>Load Breakdown Analysis</h3>
+                            <div class="chart-container">
+                                <canvas id="loadBreakdownChart"></canvas>
+                            </div>
+                        </div>
+
+                        <div class="monthly-analysis">
+                            <h3>Monthly Energy Analysis</h3>
+                            <div class="chart-container">
+                                <canvas id="monthlyEnergyChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step-navigation">
+                    <button type="button" class="btn-secondary" onclick="prevStep()">Previous</button>
+                    <button type="button" class="btn-primary" onclick="nextStep()" id="next-to-report">View Recommendations</button>
+                </div>
+            </div>
+
+            <!-- Step 5: Report & Recommendations -->
+            <div class="form-step" id="step-5">
+                <div class="step-header">
+                    <h2>Step 5: Equipment Recommendations & Report</h2>
+                    <p>Detailed system recommendations and comprehensive assessment report</p>
+                </div>
+
+                <div class="recommendations-container">
+                    <div class="recommendations-summary" id="recommendations-summary">
+                        <!-- Will be populated by JavaScript -->
+                    </div>
+
+                    <div class="report-actions">
+                        <div class="action-buttons">
+                            <button class="btn-primary large" onclick="generatePDFReport()">
+                                📄 Download Complete PDF Report
+                            </button>
+                            <button class="btn-secondary large" onclick="scheduleConsultation()">
+                                📅 Schedule On-Site Consultation
+                            </button>
+                            <button class="btn-outline large" onclick="emailReport()">
+                                📧 Email Report to Me
+                            </button>
+                        </div>
+
+                        <div class="next-steps">
+                            <h3>Next Steps</h3>
+                            <div class="steps-list">
+                                <div class="step-item">
+                                    <span class="step-number">1</span>
+                                    <div class="step-content">
+                                        <h4>Review Recommendations</h4>
+                                        <p>Download and review your complete Manual J assessment report</p>
+                                    </div>
+                                </div>
+                                <div class="step-item">
+                                    <span class="step-number">2</span>
+                                    <div class="step-content">
+                                        <h4>Schedule Site Visit</h4>
+                                        <p>Book a free on-site consultation to verify measurements and discuss options</p>
+                                    </div>
+                                </div>
+                                <div class="step-item">
+                                    <span class="step-number">3</span>
+                                    <div class="step-content">
+                                        <h4>Get Detailed Proposal</h4>
+                                        <p>Receive a comprehensive proposal with equipment specifications and pricing</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step-navigation">
+                    <button type="button" class="btn-secondary" onclick="prevStep()">Previous</button>
+                    <button type="button" class="btn-primary" onclick="window.location.href='index.html'">Return to Home</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Scheduling Modal -->
+    <div id="scheduling-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Schedule Your Free Consultation</h2>
+                <button class="close-modal" onclick="closeModal('scheduling-modal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form class="scheduling-form">
+                    <div class="form-row">
+                        <div class="input-group">
+                            <label>Preferred Date</label>
+                            <input type="date" id="preferred-date" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Preferred Time</label>
+                            <select id="preferred-time" required>
+                                <option value="">Select Time</option>
+                                <option value="morning">Morning (8AM - 12PM)</option>
+                                <option value="afternoon">Afternoon (12PM - 5PM)</option>
+                                <option value="evening">Evening (5PM - 8PM)</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="input-group">
+                            <label>Contact Name</label>
+                            <input type="text" id="contact-name" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Phone Number</label>
+                            <input type="tel" id="contact-phone" required>
+                        </div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>Email Address</label>
+                        <input type="email" id="contact-email" required>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>Additional Notes</label>
+                        <textarea id="consultation-notes" rows="3" placeholder="Any specific areas of concern or questions..."></textarea>
+                    </div>
+                    
+                    <div class="modal-actions">
+                        <button type="button" class="btn-secondary" onclick="closeModal('scheduling-modal')">Cancel</button>
+                        <button type="submit" class="btn-primary">Schedule Consultation</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Precision HVAC NorCal</h3>
+                    <p>Professional ACCA Manual J load calculations and NREL OpenStudio energy modeling for accurate HVAC system design and electrification planning.</p>
+                    <p><strong>License:</strong> CSLB #123456 | <strong>NATE Certified</strong></p>
+                </div>
+                <div class="footer-section">
+                    <h4>Assessment Services</h4>
+                    <ul>
+                        <li>ACCA Manual J Load Calculations</li>
+                        <li>NREL OpenStudio Energy Modeling</li>
+                        <li>Heat Pump Sizing Analysis</li>
+                        <li>Ductwork Design (Manual D)</li>
+                        <li>Energy Efficiency Audits</li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Service Areas</h4>
+                    <ul>
+                        <li>Oakland & East Bay</li>
+                        <li>San Francisco</li>
+                        <li>Berkeley & Richmond</li>
+                        <li>San Jose & South Bay</li>
+                        <li>Marin County</li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact Info</h4>
+                    <p>📞 (510) 555-0123</p>
+                    <p>📧 assessments@precisionhvacnorcal.com</p>
+                    <p>🕒 Mon-Fri 7AM-6PM</p>
+                    <p>📍 Serving Bay Area & Beyond</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Precision HVAC NorCal. All rights reserved. | <a href="#privacy">Privacy Policy</a> | <a href="#terms">Terms of Service</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="js/manual-j-calculator.js"></script>
+    <script src="js/manual-j-interface.js"></script>
+</body>
+</html>
