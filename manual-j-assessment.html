@@ -12,6 +12,7 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="css/manual-j.css">
+    <link rel="stylesheet" href="css/mobile-fixes.css">
     
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -27,13 +28,17 @@
                 <h1 class="logo-text">Precision HVAC NorCal</h1>
                 <span class="tagline">NREL OpenStudio Manual J Assessment</span>
             </div>
-            <div class="nav-menu">
+            <div class="nav-menu" id="nav-menu">
                 <a href="index.html">Home</a>
                 <a href="#assessment">Assessment</a>
                 <a href="#calculations">Calculations</a>
                 <a href="#recommendations">Recommendations</a>
                 <a href="#schedule">Schedule</a>
             </div>
+            <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Toggle navigation menu">
+                <span class="sr-only">Menu</span>
+                ☰
+            </button>
             <div class="nav-cta">
                 <a href="tel:(510) 555-0123" class="phone-btn">📞 (510) 555-0123</a>
                 <button class="cta-button" onclick="generateReport()">Generate Report</button>
@@ -768,8 +773,10 @@
     </footer>
 
     <!-- Scripts -->
+    <script src="js/performance-optimizations.js"></script>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="js/manual-j-calculator.js"></script>
     <script src="js/manual-j-interface.js"></script>
+    <script src="js/ui-fixes.js"></script>
 </body>
 </html>
