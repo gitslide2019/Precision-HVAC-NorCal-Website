@@ -79,13 +79,10 @@ class CalculationTransparency {
         `;
 
         // Add to assessment forms
-        const assessmentSections = document.querySelectorAll('.assessment-section');
+        const assessmentSections = document.querySelectorAll('.form-section');
         assessmentSections.forEach(section => {
-            if (section.querySelector('.step-content')) {
-                const stepContent = section.querySelector('.step-content');
-                if (!stepContent.querySelector('.calculation-controls')) {
-                    stepContent.insertAdjacentHTML('afterbegin', toggleHtml);
-                }
+            if (!section.querySelector('.calculation-controls')) {
+                section.insertAdjacentHTML('afterbegin', toggleHtml);
             }
         });
 
@@ -821,7 +818,7 @@ window.CalculationTransparency = CalculationTransparency;
 
 // Auto-initialize when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
-    if (document.querySelector('.assessment-section')) {
+    if (document.querySelector('.form-section')) {
         const transparency = new CalculationTransparency();
         transparency.init();
         
